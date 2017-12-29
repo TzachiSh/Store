@@ -1,0 +1,36 @@
+﻿@model RegisterViewModel
+@{
+    Layout = "_AuthenticateLayout";
+}
+
+<div class="row">
+    <div class="d-flex justify-content-between">
+
+        <form method="post" id="register-form" asp-action="Register" asp-controller="Account" role="form">
+            <div class="form-group">
+                <label asp-for="EmailAddress">EmailAddress</label>
+                <input asp-for="EmailAddress" tabindex="1" class="form-control" placeholder="Email" value="">
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" tabindex="2" class="form-control" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName">FullName</label>
+                <input asp-for="FullName" tabindex="2" class="form-control" placeholder="FullName">
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfrimPassword">ConfrimPassword</label>
+                <input asp-for="ConfrimPassword" tabindex="2" class="form-control" placeholder="Confirm Password">
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
