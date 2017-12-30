@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.Models.Entities;
 using Store.Models.ViewModels.Base;
 using Store.MVC.WebServiceAccess.Base;
 
 namespace Store.MVC.Admin.Controllers
 {
     [Authorize(Policy = "IsSuperUser")]
+    [Route("[controller]/[action]")]
     public class AdminController : Controller
     {
         private readonly IWebApiCalls _apiCalls;
@@ -39,6 +41,27 @@ namespace Store.MVC.Admin.Controllers
             if (!ModelState.IsValid) return View(product);
 
             await _apiCalls.CreateProduct(product);
+
+
+            return Ok();
+
+
+
+        }
+        [HttpGet()]
+        public IActionResult Category()
+        {
+
+            return View();
+
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost()]
+        public async Task<IActionResult> Category(Category category)
+        {
+            if (!ModelState.IsValid) return View(category);
+
+            await _apiCalls.CreateCategory(category);
 
 
             return Ok();

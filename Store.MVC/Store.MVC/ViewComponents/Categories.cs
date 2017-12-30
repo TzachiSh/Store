@@ -8,31 +8,24 @@ using System.Threading.Tasks;
 
 namespace Store.MVC.ViewComponents
 {
-    public class Menu : ViewComponent
+    public class Categories : ViewComponent
     {
         private readonly IWebApiCalls _webApiCalls;
 
-        public Menu(IWebApiCalls webApiCalls)
+        public Categories(IWebApiCalls webApiCalls)
         {
             _webApiCalls = webApiCalls;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var controller = ViewContext.RouteData.Values["controller"].ToString();
-            if(controller == "Admin")
-            {
-                return View("MenuView");
-            }
-            else
-            {
+         
                 var cats = await _webApiCalls.GetCategoriesAsync();
                 if (cats == null)
                 {
                     return new ContentViewComponentResult("There was an error getting the categories");
                 }
-                return View("MenuView", cats);
-            }
-            
+                return View("CategoriesView", cats);
+
         }
     }
 }

@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -41,8 +42,9 @@
                             <vc:menu></vc:menu>
                         </ul>
                     </li>
-                   
-                    @if ((await AuthorizationService.AuthorizeAsync(User, "isSuperUser")).Succeeded)
+                   @{bool IsAdmin = (await AuthorizationService.AuthorizeAsync(User, "isSuperUser")).Succeeded;
+                       }
+                    @if (IsAdmin)
                     {
                         @Html.Partial("AdminView")
 

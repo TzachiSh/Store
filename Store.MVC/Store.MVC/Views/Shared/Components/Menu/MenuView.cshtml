@@ -1,8 +1,38 @@
 @model IEnumerable<Category>
 <li><a asp-controller="Products" asp-action="Featured">Featured</a></li>
-@foreach (var item in Model)
+@if (Model != null)
 {
-    <li><a asp-controller="Products"
-            asp-action="ProductList"
-            asp-route-id="@item.Id">@item.CategoryName</a></li>
+
+
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-controller="Products"
+               asp-action="ProductList"
+               asp-route-id="@item.Id">@item.CategoryName</a>
+        </li>
+    }
+
+}
+else
+{
+
+    <li>
+        <a asp-controller="admin"
+           asp-action="Product">Add product</a>
+    </li>
+    <li>
+        <a asp-controller="admin"
+           asp-action="category">Create category</a>
+    </li>
+    <li>
+        <a asp-controller="admin"
+           asp-action="Product">Add product</a>
+    </li>
+    <li>
+        <a asp-controller="admin"
+           asp-action="Product">Add product</a>
+    </li>
+
+
 }

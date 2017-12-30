@@ -1,7 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +17,9 @@ using Store.DAL.Repos;
 using Store.DAL.Repos.Interfaces;
 using Store.Models.Entities;
 using Store.Service.Filters;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Store.Service
 {
