@@ -11,7 +11,7 @@ using System;
 namespace Store.DAL.EF.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20171228011244_IdentityAdded")]
+    [Migration("20171229180751_IdentityAdded")]
     partial class IdentityAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

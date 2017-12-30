@@ -36,7 +36,7 @@ namespace Store.MVC.Controllers
             return RedirectToAction(
             nameof(CartController.AddToCart),
             nameof(CartController).Replace("Controller", ""),
-            new { customerId = ViewBag.CustomerId, productId = id, cameFromProducts = true });
+            new {productId = id, cameFromProducts = true });
         }
         internal async Task<IActionResult> GetListOfProducts(
            int id = -1, bool featured = false, string searchString = "")

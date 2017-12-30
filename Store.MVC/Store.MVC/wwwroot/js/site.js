@@ -1,20 +1,40 @@
 ﻿$(function () {
 
     $('#login-form-link').click(function (e) {
-        window.location.href = '/account/login';
-        $("#login-form").delay(100).fadeIn(100);
-        $("#register-form").fadeOut(100);
+        $("#login-form").delay(200).fadeIn(200);
+        $("#register-form").fadeOut(200);
         $('#register-form-link').removeClass('active');
         $(this).addClass('active');
+        redirect("login");
         e.preventDefault();
     });
     $('#register-form-link').click(function (e) {
-        window.location.href = '/account/register';
-        $("#register-form").delay(100).fadeIn(100);
-        $("#login-form").fadeOut(100);
+        $("#register-form").delay(200).fadeIn(200);
+        $("#login-form").fadeOut(200);
         $('#login-form-link').removeClass('active');
         $(this).addClass('active');
+        redirect("register");
         e.preventDefault();
+
     });
+    var redirect = (action) => {
+        var selectedvalue;
+
+        $.ajax({
+            url: `/Account/${action}`, //@Url.Action("FunName","ControllerName")
+        type: 'GET',
+        dataType: 'html',
+        data: {selectedvalue: selectedvalue },
+        success: function (data) { //Make the function to return the partial view you want which would be fetched in the data
+           
+            var x = $(data).find(`.${action}-form`)
+            console.log(data);
+            $('.DynamicContent').html(x.html())
+        }
+    });
+
+    }
+        
+
 
 });

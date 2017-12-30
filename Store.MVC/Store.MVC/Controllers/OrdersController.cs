@@ -21,18 +21,28 @@ namespace Store.MVC.Controllers
         }
         // index/customerId
         [HttpGet]
-        public async Task<IActionResult> Index(int customerId)
+        public async Task<IActionResult> Index()
         {
+            int customerId = ViewBag.CustomerId;
             ViewBag.Title = "Order History";
             ViewBag.Header = "Order History";
-            IList<Order> orders = await _webApiCalls.GetOrdersAsync(customerId);
-            if (orders == null) return NotFound();
-            return View(orders);
+            try
+            {
+                IList<Order> orders = await _webApiCalls.GetOrdersAsync(customerId);
+                if (orders == null) return NotFound();
+                return View(orders);
+            }catch( Exception ex)
+            {
+                return View();
+            }
+            
+           
         }
         // details/customerId/OrderId
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> Details(int customerId, int orderId)
+        public async Task<IActionResult> Details(int orderId)
         {
+            int customerId = ViewBag.CustomerId;
             ViewBag.Title = "Order Details";
             ViewBag.Header = "Order Details";
             OrderWithDetailsAndProductInfo orderDetails =

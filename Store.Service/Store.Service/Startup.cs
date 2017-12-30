@@ -50,6 +50,8 @@ namespace Store.Service
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
                 o.Password.RequiredUniqueChars = 4;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireDigit = false;
             })
                 .AddEntityFrameworkStores<StoreContext>()
                 .AddDefaultTokenProviders();
@@ -74,7 +76,9 @@ namespace Store.Service
                         ValidIssuer = Configuration["JwtIssuer"],
                         ValidAudience = Configuration["JwtIssuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
-                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5)
+
                     };
                 });
 
@@ -114,6 +118,7 @@ namespace Store.Service
             if (env.IsDevelopment())
             {
                 var context = serviceProvider;
+
                 StoreDataInitializer.InitializeData(context);
 
                 loggerFactory.AddConsole(Configuration.GetSection("Logging"));

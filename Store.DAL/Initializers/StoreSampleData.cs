@@ -702,15 +702,12 @@ namespace Store.DAL.Initializers
                 UserName = "test@test.com",
                 Customer = new Customer
                 {
-                   FullName = "Roman",                
+                   FullName = "Roman", 
+                   
                 }
                 
         };
 
-        public static IEnumerable<Customer> GetAllCustomerRecords(UserEntity user, StoreContext context) => new List<Customer>
-        {
-          
-        };
 
         public static List<Order> GetOrders(Customer customer, StoreContext context) => new List<Order>
         {
@@ -725,13 +722,13 @@ namespace Store.DAL.Initializers
         public static List<OrderDetail> GetOrderDetails(
             Order order, StoreContext context)
         {
-            var prod1 = context.Categories
+            var prod1 = context.Categories.OrderBy(c => c.CategoryName)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(3).FirstOrDefault();
-            var prod2 = context.Categories.Skip(2)
+            var prod2 = context.Categories.OrderBy(c => c.CategoryName).Skip(2)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(2).FirstOrDefault();
-            var prod3 = context.Categories.Skip(5)
+            var prod3 = context.Categories.OrderBy(c => c.CategoryName).Skip(5)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(1).FirstOrDefault();
             return new List<OrderDetail>
@@ -746,12 +743,15 @@ namespace Store.DAL.Initializers
             StoreContext context)
         {
             var prod1 = context.Categories
+                .OrderBy(c => c.CategoryName)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(3).FirstOrDefault();
-            var prod2 = context.Categories.Skip(2)
+            var prod2 = context.Categories.OrderBy(c => c.CategoryName)
+                .Skip(2)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(2).FirstOrDefault();
-            var prod3 = context.Categories.Skip(5)
+            var prod3 = context.Categories.OrderBy(c => c.CategoryName)
+                .Skip(5)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(1).FirstOrDefault();
             return new List<OrderDetail>
@@ -765,7 +765,8 @@ namespace Store.DAL.Initializers
         public static IList<ShoppingCartRecord> GetCart(
             Customer customer, StoreContext context)
         {
-            var prod1 = context.Categories.Skip(2)
+            var prod1 = context.Categories.OrderBy(c => c.CategoryName)
+                .Skip(2)
                 .Include(c => c.Products).FirstOrDefault()?
                 .Products.Skip(1).FirstOrDefault();
             return new List<ShoppingCartRecord>

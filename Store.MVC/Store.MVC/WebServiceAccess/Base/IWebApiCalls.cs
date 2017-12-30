@@ -21,6 +21,8 @@ namespace Store.MVC.WebServiceAccess.Base
         Task<OrderWithDetailsAndProductInfo> GetOrderDetailsAsync(int customerId, int orderId);
         Task<ProductAndCategoryBase> GetOneProductAsync(int productId);
         Task<IList<ProductAndCategoryBase>> GetFeaturedProductsAsync();
+        Task<string> CreateProduct(ProductAndCategoryBase productAndCategory);
+        Task<string> CreateCategory(Category category);
         Task<IList<ProductAndCategoryBase>> SearchAsync(string searchTerm);
         Task<IList<CartRecordWithProductInfo>> GetCartAsync(int customerId);
         Task<CartRecordWithProductInfo> GetCartRecordAsync(int customerId, int productId);

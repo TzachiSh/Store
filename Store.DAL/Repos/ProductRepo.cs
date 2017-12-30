@@ -43,39 +43,42 @@ namespace Store.DAL.Repos
 
         public IEnumerable<ProductAndCategoryBase> GetProductsForCategory(int id)
             => Table
+                .OrderBy(x => x.ModelName)
                 .Where(p => p.CategoryId == id)
-                .Include(p => p.Category)
                 .Select(item => GetRecord(item, item.Category))
-                .OrderBy(x => x.ModelName);
-    
+                ;
+
 
         public IEnumerable<ProductAndCategoryBase> GetAllWithCategoryName()
             => Table
+                .OrderBy(x => x.ModelName)
                 .Include(p => p.Category)
-                .Select(item => GetRecord(item, item.Category))
-                .OrderBy(x => x.ModelName);
+                .Select(item => GetRecord(item, item.Category));
+
 
         public IEnumerable<ProductAndCategoryBase> GetFeaturedWithCategoryName()
             => Table
+                .OrderBy(x => x.ModelName)
+                .Include(p => p.Category)               
                 .Where(p => p.IsFeatured)
-                .Include(p => p.Category)
-                .Select(item => GetRecord(item, item.Category))
-                .OrderBy(x => x.ModelName);
+                .Select(item => GetRecord(item, item.Category));
+                
 
         public ProductAndCategoryBase GetOneWithCategoryName(int id)
             => Table
+             	.Include(p => p.Category)
                 .Where(p => p.Id == id)
-                .Include(p => p.Category)
                 .Select(item => GetRecord(item, item.Category))
                 .SingleOrDefault();
 
         public IEnumerable<ProductAndCategoryBase> Search(string searchString)
             => Table
+                .OrderBy(x => x.ModelName)
+                 .Include(p => p.Category)
                 .Where(p =>
                     p.Description.ToLower().Contains(searchString.ToLower())
                     || p.ModelName.ToLower().Contains(searchString.ToLower()))
-                .Include(p => p.Category)
-                .Select(item => GetRecord(item, item.Category))
-                .OrderBy(x => x.ModelName);
+                .Select(item => GetRecord(item, item.Category));
+               
     }
 }

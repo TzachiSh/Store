@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Store.MVC.WebServiceAccess.Base
 {
-    public abstract class WebApiCallsBase : ClaimsPrincipal
+    public abstract class WebApiCallsBase
     {
         protected readonly string ServiceAddress;
         protected readonly string CartBaseUri;

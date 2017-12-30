@@ -56,9 +56,7 @@ namespace Store.MVC.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
-                Console.WriteLine(ex);
-                ViewBag.Isempty = true;
+                ModelState.AddModelError(string.Empty, "There was an error adding the item to the cart.");
                 return View();
             }
 
@@ -106,16 +104,18 @@ namespace Store.MVC.Controllers
         }
         // /cart/customerId/cartId
         [HttpPost("{id}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int customerId, int id,
+        public async Task<IActionResult> Update(int id,
                                                 string timeStampString,
                                                 CartRecordViewModel item)
         {
+            int customerId = ViewBag.CustomerId;
             item.TimeStamp = JsonConvert.DeserializeObject<byte[]>($"\"{timeStampString}\"");
             if (!ModelState.IsValid) return PartialView(item);
             var mapper = _config.CreateMapper();
             var newItem = mapper.Map<ShoppingCartRecord>(item);
             try
             {
+                customerId = ViewBag.CustomerId;
                 await _webApiCalls.UpdateCartItemAsync(newItem);
                 var updatedItem = await _webApiCalls.GetCartRecordAsync(customerId, item.ProductId);
                 var newViewModel = mapper.Map<CartRecordViewModel>(updatedItem);
@@ -130,15 +130,17 @@ namespace Store.MVC.Controllers
         }
         // /cart/customerId/cartId
         [HttpPost("{id}"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int customerId, int id, ShoppingCartRecord item)
+        public async Task<IActionResult> Delete(int id, ShoppingCartRecord item)
         {
+            int customerId = ViewBag.CustomerId;
             await _webApiCalls.RemoveCartItemAsync(customerId, id, item.TimeStamp);
             return RedirectToAction(nameof(Index), new { customerId });
         }
         ///cart/customerId/buy
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Buy(int customerId, Customer customer)
+        public async Task<IActionResult> Buy(Customer customer)
         {
+            int customerId = ViewBag.CustomerId;
             int orderId = await _webApiCalls.PurchaseCartAsync(customer);
             return RedirectToAction(
             nameof(OrdersController.Details),

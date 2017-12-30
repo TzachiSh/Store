@@ -31,6 +31,7 @@ namespace Store.Service.Controllers
         [HttpGet("{customerId}")]
         public IActionResult GetCustomer(int customerId)
         {
+            
             var userId = _userManager.GetUserId(User);
             var customer = _customerRepo.Find(customerId);
             if (customer == null || customer.UserId != userId) return NotFound();

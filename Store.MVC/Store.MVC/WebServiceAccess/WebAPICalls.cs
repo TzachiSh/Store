@@ -157,5 +157,23 @@ namespace Store.MVC.WebServiceAccess
            
             return await PostRequestAsync(uri, json);
         }
+
+        public async Task<string> CreateProduct(ProductAndCategoryBase productAndCategory)
+        {
+            var uri = $"{ServiceAddress}api/Admin/Product";
+            var json = JsonConvert.SerializeObject(productAndCategory);
+
+
+            return await PostRequestAsync(uri, json);
+        }
+
+        public async Task<string> CreateCategory(Category category)
+        {
+            var uri = $"{ServiceAddress}api/Admin/category";
+            var json = JsonConvert.SerializeObject(category);
+
+
+            return await PostRequestAsync(uri, json); ;
+        }
     }
 }

@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Principal;
 using System;
+using Store.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Store.MVC
 {
@@ -41,14 +43,24 @@ namespace Store.MVC
             services.AddSingleton<IWebServiceLocator, WebServiceLocator>();
             services.AddSingleton<IAuthHelper, AuthHelper>();
             services.AddSingleton<IWebApiCalls, WebApiCalls>();
-            
+            //services.AddIdentity<UserEntity, IdentityRole>();
+
+
+            services.AddAuthorization(cfg =>
+            {
+                cfg.AddPolicy("isSuperUser", p => p.RequireClaim("isSuperUser", "true"));
+
+            });
            
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-             .AddCookie( options =>
+             .AddCookie(options =>
             {
+                
                 options.LoginPath = new PathString("/Account/Login");
                 options.AccessDeniedPath = new PathString("/error?unauth");
+                options.AccessDeniedPath = options.LoginPath;
+                options.ReturnUrlParameter = "returnUrl";
             });
 
 

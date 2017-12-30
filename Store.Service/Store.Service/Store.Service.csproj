@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Model\" />
+    <Folder Include="Properties\New folder\" />
   </ItemGroup>
 
 </Project>

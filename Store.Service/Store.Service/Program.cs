@@ -19,6 +19,7 @@ namespace Store.Service
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .UseKestrel()
             .UseUrls("http://*:40001")
             .ConfigureAppConfiguration(SetupConfiguration)
                 .UseStartup<Startup>()

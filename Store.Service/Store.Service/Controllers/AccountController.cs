@@ -31,7 +31,7 @@ namespace Store.Service.Controllers
             SignInManager<UserEntity> signInManager,
             IConfiguration configuration,
             ICustomerRepo customerRepo)
-   
+
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,7 +44,7 @@ namespace Store.Service.Controllers
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
 
-            
+
 
             if (result.Succeeded)
             {
@@ -53,14 +53,13 @@ namespace Store.Service.Controllers
                 var customer = _customerRepo.FindByUserId(appUser.Id);
                 appUser.Customer = customer;
 
-                
-                
+                var clamis = await _userManager.GetClaimsAsync(appUser);
 
-                return  GenerateJwtToken(model.Email, appUser);
+                return GenerateJwtToken(clamis.ToArray());
             }
 
             return NotFound(result);
-          
+
         }
 
         [AllowAnonymous]
@@ -71,7 +70,7 @@ namespace Store.Service.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             var user = new UserEntity
             {
                 UserName = model.EmailAddress,
@@ -86,6 +85,14 @@ namespace Store.Service.Controllers
 
             if (result.Succeeded)
             {
+                user = _userManager.Users.SingleOrDefault(r => r.Email == model.EmailAddress);
+                if(user == null)
+                {
+                    throw new ArgumentNullException("cant find user");
+                
+                }
+                await AddClaimsToUser(user);
+
                 return Created("", result);
             }
             else
@@ -94,16 +101,8 @@ namespace Store.Service.Controllers
             }
         }
 
-        private object GenerateJwtToken(string email, UserEntity user)
+        private object GenerateJwtToken(Claim[] claims)
         {
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Authentication, user.Customer.Id.ToString()),
-            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -124,9 +123,27 @@ namespace Store.Service.Controllers
             {
                 Token = Securitytoken,
                 Expires = expires,
-                CustomerId = user.Customer.Id,
-                CustomerName = user.Customer.FullName,
+
             };
+        }
+        private async Task AddClaimsToUser(UserEntity user)
+        {
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier,user.Id),
+                new Claim(ClaimTypes.Name, user.Customer.FullName),
+                new Claim(ClaimTypes.Authentication, user.Customer.Id.ToString()),
+            };
+
+           var result = await _userManager.AddClaimsAsync(user, claims);
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.ToString());
+            }
+
         }
 
         public class LoginDto
@@ -141,7 +158,7 @@ namespace Store.Service.Controllers
 
         public class RegisterDto
         {
-            [Required,DataType(DataType.EmailAddress)]
+            [Required, DataType(DataType.EmailAddress)]
             public string EmailAddress { get; set; }
 
             [Required, DataType(DataType.Password)]

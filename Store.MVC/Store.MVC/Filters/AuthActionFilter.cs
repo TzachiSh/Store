@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -31,13 +33,16 @@ namespace Store.MVC.Filters
             {
                 var token = context.HttpContext.User.FindFirst("AcessToken").Value;
 
+
+
                 string[] rolesArray = { "managers", token };
+
 
                 Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(
                     token, "token"), rolesArray);
 
                 viewBag.CustomerName = context.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
-                viewBag.CustomerId = int.Parse(context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                viewBag.CustomerId = int.Parse(context.HttpContext.User.FindFirst(ClaimTypes.Authentication).Value);
             }
             else
             {
@@ -60,18 +65,12 @@ namespace Store.MVC.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-
+            var x = context;
 
             if (context.Exception is UnauthorizedAccessException)
             {
-                context.ExceptionHandled = true;
-                context.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary
-                    {
-                        {"controller", "account" },
-                        {"action", "login" }
-
-                    });
+               context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                context.ExceptionHandled = true;                
 
             }
 

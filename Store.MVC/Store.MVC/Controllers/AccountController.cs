@@ -14,14 +14,17 @@ using System.Threading;
 using System.Security.Principal;
 using Store.Models.Entities;
 using Store.Service.Model;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 
 namespace Store.MVC.Controllers
 {
-
+    
     public class AccountController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IWebApiCalls _apiCalls;
+      
 
         public AccountController(IConfiguration configuration, IWebApiCalls apiCalls)
         {
@@ -31,70 +34,77 @@ namespace Store.MVC.Controllers
         [HttpGet()]
         public IActionResult Login()
         {
-
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost()]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model,[FromQuery] string returnUrl = null)
         {
 
             // var getTokenUrl = string.Format("api/account/login", "http://localhost:40001/");
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            if (!ModelState.IsValid) return View(model);
             try
             {
                 CookieViewModel Usermodel = await _apiCalls.LoginAsync(model);
 
                 await CreateCookie(Usermodel);
 
+  
+
             }
             catch (WebException ex)
             {
-                if(ex.Status == WebExceptionStatus.ProtocolError)
+                if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
 
-                    ModelState.AddModelError(string.Empty, "User not Found");
+                    ModelState.AddModelError(string.Empty, "Password Or Email incorrect");
                     return View(model);
 
                 }
-               
+
             }
-            
-           
-            return RedirectToAction("", returnUrl);
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction("","products");
+
         }
+        
         [HttpGet()]
         public IActionResult Register()
         {
             return View();
         }
+        [ValidateAntiForgeryToken]
         [HttpPost()]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid) return View(model);
             try
             {
                 var token = await _apiCalls.RegisterAsync(model);
 
 
-                    return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Account");
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
+                ModelState.AddModelError(string.Empty, "Somting Worng");
                 return View();
             }
-            
-            
+
+
 
         }
         public ActionResult LogOut()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             ModelState.Clear();
-            return RedirectToAction("", "Products");
+            return RedirectToAction("","products");
         }
 
         protected async Task CreateCookie(CookieViewModel userModel)
@@ -107,22 +117,22 @@ namespace Store.MVC.Controllers
                 ExpiresUtc = userModel.Expires
             };
 
-            var claims = new List<Claim>
-                   {
-                       new Claim(ClaimTypes.Name, userModel.CustomerName ),
-                       new Claim(ClaimTypes.NameIdentifier, userModel.CustomerId.ToString()),
-                       new Claim("AcessToken", string.Format(userModel.Token)),
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(userModel.Token) as JwtSecurityToken;
 
-                   };
+             
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+             var claimsIdentity = new ClaimsIdentity(
+                token.Claims,
+                CookieAuthenticationDefaults.AuthenticationScheme); 
+
+            claimsIdentity.AddClaim(new Claim("AcessToken", userModel.Token));
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), options);
         }
     }
-    
+
 }

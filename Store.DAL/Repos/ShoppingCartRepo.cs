@@ -107,11 +107,12 @@ namespace Store.DAL.Repos
         public IEnumerable<CartRecordWithProductInfo> GetShoppingCartRecords(
             int customerId)
             => Table
+            .OrderBy(x => x.Product.ModelName)
             .Where(x => x.CustomerId == customerId)
             .Include(x => x.Product)
             .ThenInclude(p => p.Category)
-            .Select(x => GetRecord(customerId, x, x.Product, x.Product.Category))
-            .OrderBy(x => x.ModelName);
+            .Select(x => GetRecord(customerId, x, x.Product, x.Product.Category));
+            
 
         public int Purchase(int customerId)
         {
