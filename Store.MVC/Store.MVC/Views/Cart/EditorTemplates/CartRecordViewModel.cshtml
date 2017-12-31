@@ -1,6 +1,6 @@
 ﻿@model CartRecordViewModel
 <form asp-controller="Cart" asp-action="Update"
-      asp-route-customerId="@Model.CustomerId" asp-route-id="@Model.Id" 
+      asp-route-customerId="@Model.CustomerId" asp-route-id="@Model.Id"
       id="updateCartForm" method="post"
       data-ajax="true" data-ajax-mode="REPLACE-WITH" data-ajax-update="#row_@Model.Id"
       data-ajax-method="POST" data-ajax-success="success" data-ajax-failure="error" data-ajax-complete="complete">
@@ -24,7 +24,7 @@
     <input asp-for="Quantity" class="cart-quantity" />
     <button class="btn btn-link btn-sm">Update</button>
 </form>
-<form asp-controller="Cart" asp-action="Delete" asp-route-customerId="@Model.CustomerId" asp-route-id="@Model.Id" id="deleteCartForm" 
+<form asp-controller="Cart" asp-action="Delete" asp-route-customerId="@Model.CustomerId" asp-route-id="@Model.Id" id="deleteCartForm"
       method="post">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="TimeStamp" />

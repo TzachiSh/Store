@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Store.MVC.Configuration;
 using System;
@@ -22,16 +24,18 @@ namespace Store.MVC.WebServiceAccess.Base
         protected readonly string CustomerBaseUri;
         protected readonly string ProductBaseUri;
         protected readonly string OrdersBaseUri;
+        private readonly IConfiguration _configuration;
 
- 
-    protected WebApiCallsBase(IWebServiceLocator settings)
+        protected WebApiCallsBase(IWebServiceLocator settings)
         {
+            
             ServiceAddress = settings.ServiceAddress;
             CartBaseUri = $"{ServiceAddress}api/ShoppingCart/";
             CategoryBaseUri = $"{ServiceAddress}api/category/";
             CustomerBaseUri = $"{ServiceAddress}api/customer/";
             ProductBaseUri = $"{ServiceAddress}api/product/";
             OrdersBaseUri = $"{ServiceAddress}api/orders/";
+           
         }
 
         internal async Task<string> GetResponseAsync(string uri)

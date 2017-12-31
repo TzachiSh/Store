@@ -4,26 +4,21 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:40001/",
-      "sslPort": 0
+      "ASPNETCORE_ENVIRONMENT": "Development",
+      "sslPort": 44380
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "Store.Service": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/",
+      "ASPNETCORE_ENVIRONMENT": "Development"
+    },
+    "IIS": {
+      "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:40001/"
+      "use64Bit": true
     }
   }
 }

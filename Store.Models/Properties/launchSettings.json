@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Store.Models": {
+      "commandName": "Project"
+    },
+    "newProfile1": {
+      "commandName": "Executable"
+    }
+  }
+}

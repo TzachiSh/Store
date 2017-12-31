@@ -15,6 +15,8 @@ using System.Security.Principal;
 using System;
 using Store.Models.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Store.MVC
 {
@@ -66,7 +68,8 @@ namespace Store.MVC
 
             services.AddMvc(config => {
                 config.Filters.Add(new AuthActionFilter(services.BuildServiceProvider().GetService<IAuthHelper>()));
-        });
+                //config.Filters.Add(new RequireHttpsAttribute());
+            });
           
         }
 
@@ -75,6 +78,11 @@ namespace Store.MVC
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            if (!env.IsDevelopment())
+            {
+                var options = new RewriteOptions()
+                .AddRedirectToHttps();
+            }
 
             if (env.IsDevelopment())
             {
@@ -83,11 +91,11 @@ namespace Store.MVC
             }
             else
             {
-                app.UseExceptionHandler("/Product/Error");
+                app.UseExceptionHandler("/Product/Index");
             }
 
 
-            app.UseAuthentication();
+        app.UseAuthentication();
         app.UseStaticFiles();
             
             app.UseMvc(routes =>

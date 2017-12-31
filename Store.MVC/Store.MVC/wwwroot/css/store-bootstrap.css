@@ -8352,7 +8352,7 @@ label, .key-label {
 }
 
 .product-table {
-    min-width: 600px;
+    min-width: 100px;
 }
 
     .product-table .cart-quantity-row input, .product-table .cart-quantity-row button {

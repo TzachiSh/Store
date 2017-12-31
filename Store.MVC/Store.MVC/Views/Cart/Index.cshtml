@@ -4,7 +4,7 @@
     var cartTotal = 0M;
 }
 <h3>@ViewBag.Header</h3>
-<div >
+<div>
     <div id="foo" name="foo"></div>
     <table class="table table-bordered product-table">
         <thead>
@@ -17,17 +17,17 @@
             </tr>
         </thead>
         @if (Model != null)
-        {   
-        for (var x = 0; x < Model.CartRecords.Count; x++)
         {
-            var item = Model.CartRecords[x];
-            cartTotal += item.LineItemTotal;
-            @Html.Partial("Update", item)
+            for (var x = 0; x < Model.CartRecords.Count; x++)
+            {
+                var item = Model.CartRecords[x];
+                cartTotal += item.LineItemTotal;
+                @Html.Partial("Update", item)
             }
         }
         else
         {
-           <tr> The Cart Empty</tr>
+            <tr> The Cart Empty</tr>
 
         }
         <tfoot>
@@ -51,7 +51,7 @@
     </form>
 </div>
 @section Scripts
-{
+    {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -70,7 +70,7 @@
         }
         function getSum(total, num) {
             "use strict";
-            return total + Math.round(num.innerText * 100)/100;
+            return total + Math.round(num.innerText * 100) / 100;
         }
         function updateCartPrice() {
             "use strict";

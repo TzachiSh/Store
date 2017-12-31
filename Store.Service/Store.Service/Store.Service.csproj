@@ -1,12 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">© 2016 - Store.MVC PBK Productions
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\StoreApi - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\StoreService20171231085658 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+    <PackageReference Include="Store.DAL" Version="1.0.3.5" />
+    <PackageReference Include="Store.Models" Version="1.0.3.4" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0-preview1-25914-04" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,13 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Store.DAL\Store.DAL.csproj" />
-    <ProjectReference Include="..\..\Store.Models\Store.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Properties\New folder\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

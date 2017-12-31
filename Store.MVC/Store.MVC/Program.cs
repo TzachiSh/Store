@@ -19,6 +19,7 @@ namespace Store.MVC
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
                 .UseUrls("http://*40002")
                 .UseStartup<Startup>()
                 .Build();

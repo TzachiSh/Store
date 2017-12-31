@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,9 +42,18 @@ namespace Store.Service
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddDbContext<StoreContext>(options =>
             {
-                options.UseSqlServer( Configuration.GetConnectionString("Store"));
+                if (_env.IsDevelopment())
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("Store"));
+                }
+                else
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("ServerDb"));
+                }
+                
             });
 
             // ===== Add Identity ========
@@ -64,7 +75,9 @@ namespace Store.Service
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
                     
+
 
                 })
                 .AddJwtBearer(cfg =>
@@ -84,6 +97,11 @@ namespace Store.Service
 
             DIContainer(services);
 
+            services.AddAuthorization(cfg =>
+            {
+                cfg.AddPolicy("isSuperUser", p => p.RequireClaim("isSuperUser", "true"));
+            });
+
        
 
             services.AddCors(options =>
@@ -96,8 +114,10 @@ namespace Store.Service
             });
             services.AddMvcCore(config =>
             {
+
                 config.Filters.Add(new StoreExceptionFilter(_env.IsDevelopment()));
 
+                //config.Filters.Add(new RequireHttpsAttribute());
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
 ;
@@ -115,19 +135,31 @@ namespace Store.Service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+
+            if (!env.IsDevelopment())
+            {
+                var options = new RewriteOptions()
+                .AddRedirectToHttps();
+            }
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
             if (env.IsDevelopment())
             {
-                var context = serviceProvider;
+               
 
-                StoreDataInitializer.InitializeData(context);
+                
 
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                loggerFactory.AddDebug();
 
                 app.UseDeveloperExceptionPage();
 
                 app.UseCors("AllowAll");
             }
+            var context = serviceProvider;
+
+            StoreDataInitializer.InitializeData(context);
+
 
             app.UseAuthentication();
 

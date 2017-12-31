@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.DAL.Repos.Base;
@@ -11,7 +12,8 @@ using Store.Models.ViewModels.Base;
 
 namespace Store.Service.Admin.Controllers
 {
-    
+
+    [Authorize(Policy = "IsSuperUser")]
     [Route("api/[controller]/[action]")]
     public class AdminController : Controller
     {
