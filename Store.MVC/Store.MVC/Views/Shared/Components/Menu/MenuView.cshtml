@@ -1,8 +1,4 @@
-@model IEnumerable<Category>
-<li><a asp-controller="Products" asp-action="Featured">Featured</a></li>
-@if (Model != null)
-{
-
+    @model IEnumerable<Category>
 
     @foreach (var item in Model)
     {
@@ -13,26 +9,3 @@
         </li>
     }
 
-}
-else
-{
-
-    <li>
-        <a asp-controller="admin"
-           asp-action="Product">Add product</a>
-    </li>
-    <li>
-        <a asp-controller="admin"
-           asp-action="category">Create category</a>
-    </li>
-    <li>
-        <a asp-controller="admin"
-           asp-action="Product">Add product</a>
-    </li>
-    <li>
-        <a asp-controller="admin"
-           asp-action="Product">Add product</a>
-    </li>
-
-
-}

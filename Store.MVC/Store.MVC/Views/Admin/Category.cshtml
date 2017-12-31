@@ -1,14 +1,14 @@
 ﻿@model Category
-
-<form class="well form-horizontal" asp-action="product" asp-controller="admin" method="post" id="contact_form">
+@{
+    Layout = "_AdminLayout";
+}
+<form class="well form-horizontal" asp-action="category" asp-controller="admin" method="post" id="contact_form">
     <fieldset>
 
         <!-- Form Name -->
         <legend>Post new product!</legend>
 
         <!-- Text input-->
-
-
         <!-- Text input-->
         <div class="form-group">
             <label asp-for="CategoryName" class="col-md-4 control-label"></label>

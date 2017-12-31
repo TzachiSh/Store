@@ -158,10 +158,10 @@ namespace Store.MVC.WebServiceAccess
             return await PostRequestAsync(uri, json);
         }
 
-        public async Task<string> CreateProduct(ProductAndCategoryBase productAndCategory)
+        public async Task<string> CreateProduct(Product product)
         {
             var uri = $"{ServiceAddress}api/Admin/Product";
-            var json = JsonConvert.SerializeObject(productAndCategory);
+            var json = JsonConvert.SerializeObject(product);
 
 
             return await PostRequestAsync(uri, json);
@@ -174,6 +174,12 @@ namespace Store.MVC.WebServiceAccess
 
 
             return await PostRequestAsync(uri, json); ;
+        }
+
+        public async Task<IList<Order>> GetAllOrdersAsync()
+        {
+            var uri = $"{ServiceAddress}api/admin/orders";
+            return await GetItemListAsync<Order>(uri);
         }
     }
 }

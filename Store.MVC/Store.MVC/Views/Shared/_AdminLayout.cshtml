@@ -1,10 +1,8 @@
-﻿@using Microsoft.AspNetCore.Authorization
-@inject IAuthorizationService AuthorizationService
-
+﻿
 <!DOCTYPE html>
 <html>
 <head>
-    
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -37,32 +35,19 @@
             <nav class="navbar-collapse collapse header-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle hidden-md hidden-lg" data-toggle="dropdown">Categories <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle hidden-md hidden-lg" data-toggle="dropdown">Menagment <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <vc:menu></vc:menu>
+                            <li>
+                                <a asp-controller="admin"
+                                   asp-action="Product">Add product</a>
+                            </li>
+                            <li>
+                                <a asp-controller="admin"
+                                   asp-action="category">Create category</a>
+                            </li>
                         </ul>
                     </li>
-                   @{bool IsAdmin = (await AuthorizationService.AuthorizeAsync(User, "isSuperUser")).Succeeded;
-                       }
-                    @if (IsAdmin)
-                    {
                         @Html.Partial("AdminView")
-
-                    }
-                    else if (User.Identity.IsAuthenticated)
-                    {
-
-                        @Html.Partial("LoginView")
-                    }
-                    else
-                    {
-                        <li>
-                            <a asp - area="" asp-controller="Account" asp-action="Login" class="nav navbar-right">
-                                <span class="glyphicon glyphicon-log-in"> Login</span>
-                            </a>
-                        </li>
-                    }
-
                 </ul>
             </nav>
         </div>
@@ -74,7 +59,14 @@
                     <a asp-controller="Products" asp-action="Index"><img style="z-index: 2000" src="~/images/store-logo.png" alt="Store Store" /></a>
                 </div>
                 <ul class="nav nav-pills hidden-xs hidden-sm">
-                    <vc:menu></vc:menu>
+                    <li>
+                        <a asp-controller="admin"
+                           asp-action="Product">Add product</a>
+                    </li>
+                    <li>
+                        <a asp-controller="admin"
+                           asp-action="category">Create category</a>
+                    </li>
                 </ul>
             </nav>
             <div class="panel-body">
@@ -85,7 +77,7 @@
     <footer>
         <hr />
         <div class="container">
-            <small class="text-muted">&copy; zahi shirazi  <email email-name="blog" email-domain="zahi.shirazi@gmail.com"></email></small>
+            <small class="text-muted">&copy; 2016 - Store.MVC PBK Productions <email email-name="blog" email-domain="skimedic.com"></email></small>
         </div>
     </footer>
 

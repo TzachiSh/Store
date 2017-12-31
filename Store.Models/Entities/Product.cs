@@ -8,9 +8,9 @@ namespace Store.Models.Entities
     [Table("Products", Schema = "Store")]
     public class Product : EntityBase
     {
-        [MaxLength(3800)]
+        [MaxLength(3800), Required]
         public string Description { get; set; }
-        [MaxLength(50)]
+        [MaxLength(50), Required]
         public string ModelName { get; set; }
         public bool IsFeatured { get; set; }
         [MaxLength(50)]
@@ -21,10 +21,11 @@ namespace Store.Models.Entities
         public string ProductImageLarge { get; set; }
         [MaxLength(150)]
         public string ProductImageThumb { get; set; }
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency), Required]
         public decimal UnitCost { get; set; }
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency), Required]
         public decimal CurrentPrice { get; set; }
+        [Required]
         public int UnitsInStock { get; set; }
         [Required]
         public int CategoryId { get; set; }

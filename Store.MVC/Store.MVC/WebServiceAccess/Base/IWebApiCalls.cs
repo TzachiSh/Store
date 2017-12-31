@@ -21,7 +21,7 @@ namespace Store.MVC.WebServiceAccess.Base
         Task<OrderWithDetailsAndProductInfo> GetOrderDetailsAsync(int customerId, int orderId);
         Task<ProductAndCategoryBase> GetOneProductAsync(int productId);
         Task<IList<ProductAndCategoryBase>> GetFeaturedProductsAsync();
-        Task<string> CreateProduct(ProductAndCategoryBase productAndCategory);
+        Task<string> CreateProduct(Product product);
         Task<string> CreateCategory(Category category);
         Task<IList<ProductAndCategoryBase>> SearchAsync(string searchTerm);
         Task<IList<CartRecordWithProductInfo>> GetCartAsync(int customerId);
@@ -32,6 +32,7 @@ namespace Store.MVC.WebServiceAccess.Base
         Task<int> PurchaseCartAsync(Customer customer);
         Task<IList<ProductAndCategoryBase>> GetProductsAsync();
         Task<CookieViewModel> LoginAsync(LoginViewModel loginViewModel);
+        Task<IList<Order>> GetAllOrdersAsync();
         Task<string> RegisterAsync(RegisterViewModel model);
     }
 }

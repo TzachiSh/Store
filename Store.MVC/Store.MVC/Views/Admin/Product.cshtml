@@ -1,5 +1,7 @@
-﻿@model ProductAndCategoryBase
-
+﻿@model Product
+@{
+    Layout = "_AdminLayout";
+}
 
 
 
@@ -16,7 +18,7 @@
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
-                    <input asp-for="ModelName" placeholder="Model name" class="form-control" type="text">
+                    <input asp-for="ModelName" placeholder="Model name" class="form-control">
                     <span asp-validation-for="ModelName"></span>
                 </div>
             </div>
@@ -29,7 +31,7 @@
             <div class="col-md-4 inputGroupContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
-                    <input asp-for="ModelNumber" name="last_name" placeholder="Last Name" class="form-control" type="text">
+                    <input asp-for="ModelNumber" placeholder="Model number" class="form-control">
                     <span asp-validation-for="ModelName"></span>
                 </div>
             </div>
@@ -43,6 +45,16 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
                     <input asp-for="UnitCost" placeholder="Cost" class="form-control" type="number">
                     <span asp-validation-for="ModelName"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CurrentPrice" class="col-md-4 control-label"></label>
+            <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                    <input asp-for="CurrentPrice" placeholder="Current Price" class="form-control" type="number">
+                    <span asp-validation-for="CurrentPrice"></span>
                 </div>
             </div>
         </div>
@@ -63,13 +75,13 @@
         <!-- Select Basic -->
 
         <div class="form-group">
-            <label asp-for="CategoryName" class="col-md-4 control-label"></label>
+            <label asp-for="CategoryId" class="col-md-4 control-label"></label>
             <div class="col-md-4 selectContainer">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-                    <select asp-for="CategoryName" class="form-control selectpicker">
+                    <select asp-for="CategoryId" class="form-control selectpicker">
                         <option value=" ">Chose category</option>
-                       <vc:categories></vc:categories>
+                        <vc:categories></vc:categories>
                     </select>
                     <span asp-validation-for="ModelName"></span>
                 </div>
@@ -81,10 +93,10 @@
             <div class="col-md-4">
                 <div class="radio">
                     <label>
-                        <input asp-for="IsFeatured" type="radio" value="ture" /> Yes
+                        @Html.CheckBoxFor(m => m.IsFeatured)
                     </label>
                     <label>
-                        <input asp-for="IsFeatured" type="radio" value="false" /> No
+
 
                     </label>
                 </div>

@@ -16,17 +16,35 @@ namespace Store.MVC.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IWebApiCalls _apiCalls;
+        
+
 
         public AdminController(IWebApiCalls apiCalls)
         {
             _apiCalls = apiCalls;
         }
         // GET: Admin
-        public ActionResult Index()
+        public async Task <ActionResult> Index()
         {
-            return View();
-        }
+            try
+            {
+                IList<Order> orders = await _apiCalls.GetAllOrdersAsync();
+                ViewBag.Header = "Orders";
 
+                return View("orders", orders);
+            }
+            catch(Exception)
+            {                
+                return View("orders");
+            }
+
+            
+
+
+           
+            
+        }
+  
         [HttpGet()]
         public IActionResult Product()
         {
@@ -36,15 +54,24 @@ namespace Store.MVC.Admin.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost()]
-        public async Task<IActionResult> Product(ProductAndCategoryBase product)
+        public async Task<IActionResult> Product(Product product)
         {
-            if (!ModelState.IsValid) return View(product);
 
-            await _apiCalls.CreateProduct(product);
+            try
+            {
+                await _apiCalls.CreateProduct(product);
 
+                return Ok(product);
 
-            return Ok();
+            }
+            catch (Exception)
+            {
 
+                ModelState.AddModelError(string.Empty, "There was an error adding new product");
+                return View();
+            }
+
+            
 
 
         }
@@ -67,84 +94,18 @@ namespace Store.MVC.Admin.Controllers
             return Ok();
 
 
-
+            
         }
+        //[HttpGet()]
+        //public async Task <IActionResult> Orders()
+        //{
+        //    IList<Order> orders = await _apiCalls.GetAllOrdersAsync();
 
-        // GET: Admin/Details/5
-        public ActionResult Details(int id)
-        {
+        //    return View(orders.ToList());
 
 
-            return View();
-        }
 
-        // GET: Admin/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //}
 
-        // POST: Admin/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

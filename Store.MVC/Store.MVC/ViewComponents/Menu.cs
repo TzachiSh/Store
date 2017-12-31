@@ -18,13 +18,6 @@ namespace Store.MVC.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var controller = ViewContext.RouteData.Values["controller"].ToString();
-            if(controller == "Admin")
-            {
-                return View("MenuView");
-            }
-            else
-            {
                 var cats = await _webApiCalls.GetCategoriesAsync();
                 if (cats == null)
                 {
@@ -34,5 +27,4 @@ namespace Store.MVC.ViewComponents
             }
             
         }
-    }
 }

@@ -1,16 +1,16 @@
-@model IList<Order>
+@model List<Order>
 
 <h3>@ViewBag.Header</h3>
 
 @if (Model == null)
 {
     <div class="order-card">
-            <div class="order-card-heading">
-                <div class="row" style="padding-bottom : 50px">
-                    <h2 class="text-center text-warning"><span class="glyphicon glyphicon-alert"></span> you haven't ordered yet <span class="glyphicon glyphicon-alert"></span></h2>
-                    </div>
-                </div>
+        <div class="order-card-heading">
+            <div class="row" style="padding-bottom : 50px">
+                <h2 class="text-center text-warning"><span class="glyphicon glyphicon-alert"></span> you haven't ordered yet <span class="glyphicon glyphicon-alert"></span></h2>
+            </div>
         </div>
+    </div>
 }
 else
 {

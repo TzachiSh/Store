@@ -65,7 +65,6 @@ namespace Store.MVC.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            var x = context;
 
             if (context.Exception is UnauthorizedAccessException)
             {

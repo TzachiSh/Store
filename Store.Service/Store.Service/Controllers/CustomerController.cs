@@ -21,11 +21,7 @@ namespace Store.Service.Controllers
             _customerRepo = customerRepo;
             _userManager = userManager;
         }
-        [HttpGet]
-        public IActionResult GetCustomers()
-        {
-            return Ok(_customerRepo.GetAll());
-        }
+
 
 
         [HttpGet("{customerId}")]
